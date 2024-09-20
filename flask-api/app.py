@@ -1,28 +1,23 @@
-from flask import Flask, jsonify, request
+from fastapi import FastAPI, HTTPException, Query
 from connection import listB, getByStudy
 import secrets
 
-app = Flask(__name__)
+app = FastAPI()
 
 app.secret_key = secrets.token_hex(16)
 
-@app.route('/list', methods=['GET'])
-def get_list():
+@app.get('/list')
+async def get_list():
     items = listB()
-    return jsonify(items=items)
+    return {"items": items}
 
-@app.route('/study', methods=['GET'])
-def get_study():
-    study_name = request.args.get('study_name')
+@app.get('/study')
+async def get_study(study_name: str = Query(None)):
     if study_name:
         study_data = getByStudy(study_name)
         if study_data:
-            return jsonify(study_data)
+            return study_data
         else:
-            return jsonify({'message': 'Study not found'}), 404
+            raise HTTPException(status_code=404, detail="Study not found")
     else:
-        return jsonify({'message': 'Missing study_name parameter'}), 400
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        raise HTTPException(status_code=400, detail="Missing study_name parameter")
