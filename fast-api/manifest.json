@@ -2,7 +2,7 @@
   "version": 1,
   "locale": "English_United States.1252",
   "metadata": {
-    "appmode": "python-api",
+    "appmode": "python-fastapi",
     "entrypoint": "app"
   },
   "python": {
@@ -15,10 +15,10 @@
   },
   "files": {
     "requirements.txt": {
-      "checksum": "db5fac9cb94b4fe5d1a0f17e3c1d2159"
+      "checksum": "89003b8bf82569d697aef9b38fdac71a"
     },
     "app.py": {
-      "checksum": "5dfc3d2b41bf3801a5adfc65065d316c"
+      "checksum": "0a3b8c615248eb800c68ca8fb685fdb3"
     },
     "connection.py": {
       "checksum": "9b95c3650c1137e3b54c083f316591bd"

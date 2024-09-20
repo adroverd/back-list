@@ -2,7 +2,11 @@ from fastapi import FastAPI, HTTPException, Query
 from connection import listB, getByStudy
 import secrets
 
-app = FastAPI()
+app = FastAPI(
+    title="Backend List SB API",
+    description="Standard Bulletin list and select by study",
+
+)
 
 app.secret_key = secrets.token_hex(16)
 
