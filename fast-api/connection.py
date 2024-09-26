@@ -1,8 +1,9 @@
 import os
 import cx_Oracle
 
+
 def con():
-    host = os.getenv('DB_HOST')
+    """host = os.getenv('DB_HOST')
     port = os.getenv('DB_PORT')
     service_name = os.getenv('DB_SERVICE_NAME')
     user = os.getenv('DB_USER')
@@ -11,6 +12,10 @@ def con():
     dsn = cx_Oracle.makedsn(host=host, port=port, service_name=service_name)
     connection = cx_Oracle.connect(user=user, password=password, dsn=dsn)
     print("dsn ===>>>> " + dsn)
+    return connection
+    """
+    dsn = cx_Oracle.makedsn(host='EXADB03PR-SCAN-ALSC.MERCK.COM', port=1521, service_name='PMCKCI')
+    connection = cx_Oracle.connect(user='adroverd_4938', password='Nanita!20245', dsn=dsn)
     return connection
 
 # SIMIL ORM
@@ -53,3 +58,34 @@ def getByStudy(study_name):
     connection.close()
 
     return result
+
+import json
+import pandas as pd  # Importar Pandas para trabajar con DataFrames
+
+def getQuery(queryP):
+
+    connection = con()
+    cursor = connection.cursor()    
+    query = queryP
+    cursor.execute(query)
+
+    columns = [col[0] for col in cursor.description]
+    rows = cursor.fetchall()
+    df_from_db = pd.DataFrame(rows, columns=columns)
+
+    with open('../resources/PC_clean.json', 'r') as file:
+        json_list = json.load(file)
+    df_from_json = pd.DataFrame(json_list)
+
+    result_df = pd.merge(df_from_db, df_from_json, left_on='TRIAL', right_on='Project Name', how='inner')
+    result_df = result_df[['TRIAL', 'VALUE']]
+
+    # Convertir el DataFrame resultante a formato JSON
+    result_json = result_df.to_json(orient='records')
+
+    # Cerrar la conexión y liberar recursos
+    cursor.close()
+    connection.close()
+    print(result_json)
+    # Devolver el JSON como respuesta
+    return result_json
