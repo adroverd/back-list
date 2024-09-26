@@ -1,3 +1,5 @@
+import json
+import pandas as pd
 import os
 import cx_Oracle
 
@@ -55,8 +57,6 @@ def getByStudy(study_name):
 
     return result
 
-import json
-import pandas as pd  # Importar Pandas para trabajar con DataFrames
 
 def getQuery(queryP):
 

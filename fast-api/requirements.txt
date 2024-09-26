@@ -1,3 +1,4 @@
 cx_Oracle
 fastapi
 pydantic
+pandas
