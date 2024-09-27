@@ -4,7 +4,7 @@ import os
 import cx_Oracle
 
 # PARA DEPLOY DEV
-def con():
+def conDMW():
     host = os.getenv('DB_HOST')
     port = os.getenv('DB_PORT')
     service_name = os.getenv('DB_SERVICE_NAME')
